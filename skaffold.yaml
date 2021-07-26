@@ -1,0 +1,20 @@
+apiVersion: skaffold/v2beta19
+kind: Config
+metadata:
+  name: kafka
+deploy:
+  helm:
+    releases:
+    - name: kafka
+      chartPath: kafka
+      setValues:
+        replicaCount: 2
+portForward:
+- resourceType: Pod
+  resourceName: kafka-0
+  port: 9092
+  localPort: 9092
+- resourceType: Pod
+  resourceName: kafka-1
+  port: 9092
+  localPort: 9093
