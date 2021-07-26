@@ -18,4 +18,16 @@ It uses the Bitnami Kafka cluster charts and the Helm tool for deployment.
 
 1. Run `skaffold dev`
 
-1. Connect with the Kafka client to the brokers on ports `9092` and `9093` locally.
+1. Connect with a Kafka client in the cluster:
+
+    ```shell
+    kubectl run kafka-client --restart='Never' --image docker.io/bitnami/kafka:2.8.0-debian-10-r55 --namespace default --command -- sleep infinity
+    kubectl exec --tty -i kafka-client --namespace default -- bash
+    kafka-console-producer.sh \
+            --broker-list kafka-0.kafka-headless.default.svc.cluster.local:9092,kafka-1.kafka-headless.default.svc.cluster.local:9092 \
+            --topic test
+    kafka-console-consumer.sh \
+            --bootstrap-server kafka.default.svc.cluster.local:9092 \
+            --topic test \
+            --from-beginning
+    ```
