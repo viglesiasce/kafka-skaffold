@@ -2,6 +2,10 @@ apiVersion: skaffold/v2beta19
 kind: Config
 metadata:
   name: kafka
+build:
+  artifacts:
+    - context: .
+      image: kafka-test
 deploy:
   helm:
     releases:
@@ -9,6 +13,10 @@ deploy:
       chartPath: kafka
       setValues:
         replicaCount: 2
+        deleteTopicEnable: true
+  kubectl:
+    manifests:
+    - deployment.yaml
 portForward:
 - resourceType: Pod
   resourceName: kafka-0

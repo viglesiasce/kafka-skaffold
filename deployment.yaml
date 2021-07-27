@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: kafka-test
+spec:
+  selector:
+    matchLabels:
+      app: kafka-test
+  template:
+    metadata:
+      labels:
+        app: kafka-test
+    spec:
+      containers:
+      - name: kafka-test
+        image: kafka-test
+        resources:
+          requests:
+            memory: "32Mi"
+            cpu: "100m"
+          limits:
+            memory: "700Mi"
+            cpu: "1"
+        ports:
+        - containerPort: 8080
